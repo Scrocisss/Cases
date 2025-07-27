@@ -420,3 +420,9 @@ Content-Type: application/json
 
 ![](./screens/screen6.PNG)
 
+
+# Флаг:
+
+```
+caplag{nosql_rce_capla_capla_master}
+```
