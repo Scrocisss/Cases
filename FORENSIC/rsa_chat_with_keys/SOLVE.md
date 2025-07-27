@@ -1,5 +1,6 @@
-В архиве получаем 2 файла:
+### В архиве получаем 2 файла:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# ls -la                                                                   
 total 52
@@ -7,16 +8,20 @@ drwxrwxrwx 1 root root     0 Mar  5 16:47 .
 drwxrwxrwx 1 root root     0 Jul 27 14:36 ..
 -rwxrwxrwx 1 root root 27152 Mar  5 15:36 dump
 -rwxrwxrwx 1 root root 22321 Mar  5 16:32 SecretPrograms.pdf
+```
 
-Проверяем тип файлов:
+### Проверяем тип файлов:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# file *                                                                   
 dump:               pcapng capture file - version 1.0
 SecretPrograms.pdf: Zip archive data, at least v2.0 to extract, compression method=store
+```
 
-Меняем названия для удобства:
+### Меняем названия для удобства:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# mv dump dump.pcapng
 
@@ -26,10 +31,11 @@ SecretPrograms.pdf: Zip archive data, at least v2.0 to extract, compression meth
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# ls                                                                       
 dump.pcapng  SecretPrograms.zip
+```
 
+### Пробуем разархивировать:
 
-Пробуем разархивировать:
-
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# unzip SecretPrograms.zip                                                 
 Archive:  SecretPrograms.zip
@@ -37,9 +43,11 @@ Archive:  SecretPrograms.zip
 [SecretPrograms.zip] SecretPrograms/client password: 
    skipping: SecretPrograms/client   incorrect password
    skipping: SecretPrograms/server   incorrect password
+```
 
-Брутим пароль:
+### Брутим пароль:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# fcrackzip -v -D -u -p /usr/share/wordlists/rockyou.txt SecretPrograms.zip'SecretPrograms/' is not encrypted, skipping
 found file 'SecretPrograms/client', (size cp/uc  10885/ 13104, flags 1, chk 3fd3)
@@ -47,18 +55,22 @@ found file 'SecretPrograms/server', (size cp/uc  10964/ 13324, flags 1, chk 4804
 
 
 PASSWORD FOUND!!!!: pw == caramelo
+```
 
-Разархивируем:
+### Разархивируем:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task]
 └─# unzip SecretPrograms.zip                                                 
 Archive:  SecretPrograms.zip
 [SecretPrograms.zip] SecretPrograms/client password: 
   inflating: SecretPrograms/client   
   inflating: SecretPrograms/server  
+```
 
-Смотрим:
+### Смотрим:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task/SecretPrograms]
 └─# ls -la                                                                   
 total 32
@@ -71,19 +83,23 @@ drwxrwxrwx 1 root root     0 Jul 27 14:39 ..
 └─# file *                                                                   
 client: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), statically linked, no section header
 server: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), statically linked, no section header
+```
 
-Тут 2 исполняемых файла, пробиваем их с помощью strings:
+### Тут 2 исполняемых файла, пробиваем их с помощью strings:
 
 И видим что они запакованы:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task/SecretPrograms]
 └─# strings -n10 *   
 
 $Info: This file is packed with the UPX executable packer http://upx.sf.net $
 $Id: UPX 4.24 Copyright (C) 1996-2024 the UPX Team. All Rights Reserved. $
+```
 
-Гуглим упаковщик и распаковываем:
+### Гуглим упаковщик и распаковываем:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task/SecretPrograms]
 └─# upx -d client                                                            
                        Ultimate Packer for eXecutables
@@ -107,34 +123,44 @@ UPX 4.2.4       Markus Oberhumer, Laszlo Molnar & John Reiser    May 9th 2024
      27011 <-     13324   49.33%   linux/amd64   server
 
 Unpacked 1 file.
+```
 
-Снова смотрим strings:
+### Снова смотрим strings:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task/SecretPrograms]
 └─# strings -n10 *   
+```
 
 Находим приватные ключи
 
-Создаем файл приватного ключа клиента:
+### Создаем файл приватного ключа клиента:
 
+```
 echo "Найденная base64 строка в файле клиента" | base64 -d > client_private.key
+```
 
 Создаем файл приватного ключа сервера:
 
+```
 echo "Найденная base64 строка в файле сервера" | base64 -d > server_private.key
+```
 
-Проверяем корректность приватных ключей:
+### Проверяем корректность приватных ключей:
 
+```
 ┌──(root㉿scrock)-[~/mnt/task (17)/task/SecretPrograms]
 └─# openssl rsa -in client_private.key -check -noout
 openssl rsa -in server_private.key -check -noout
 RSA key ok
 RSA key ok
+```
 
 Там также еще будут публичные ключи (немного короче base64 строки), но они нам для расшифровки не нужны.
 
-У меня уже был примерный код поэтому я отредактировал его под данный кейс, думаю тут можно было импортировать ключи в wireshark
+### У меня уже был примерный код поэтому я отредактировал его под данный кейс
 
+```python
 from scapy.all import *
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
@@ -154,8 +180,9 @@ def decrypt_pcap(pcap_file, private_key_path):
                 continue
 
 decrypt_pcap(r"C:\Users\scrock_\Desktop\a\iso\ctf\EHAX++\task (17)\task\dump.pcapng", r"C:\Users\scrock_\Desktop\a\iso\ctf\EHAX++\task (17)\task\SecretPrograms\server_private.key")
+```
 
-Обратите внимание, что здесь не полный диалог, расшифрована только одна сторона, диалог:
+### Обратите внимание, что здесь не полный диалог, расшифрована только одна сторона, диалог:
 
 (.venv) PS C:\Users\scrock_\Desktop\a\LABS\SEMESTR 9\BD> .\.venv\Scripts\python.exe .\ОТЧЕТЫ\ctf.py
 Decrypted: привет привет
@@ -173,6 +200,12 @@ Decrypted: то есть...
 Decrypted: фигасе
 Decrypted: согласен
 
-Далее гуглим место:
+### Далее гуглим место:
 
-screen1
+![](./screens/screen1.PNG)
+
+### Флаг:
+
+```
+caplag{НАРОДНАЯ_4_2_САНКТ-ПЕТЕРБУРГ}
+```
