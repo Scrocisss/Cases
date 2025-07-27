@@ -28,8 +28,11 @@ ffuf -w /usr/share/wordlists/dirb/big.txt \
 
 http://platform_ctf_1.caplag.su:33212/graphql
 
+![](./screens/screen7.PNG)
+
 Запросим схему:
 
+```
 query {
   __schema {
     types {
@@ -43,9 +46,12 @@ query {
     }
   }
 }
+```
 
-Результат:
+<details>
+<summary>Показать код (первые 8 строк)</summary>
 
+```json
 {
   "data": {
     "__schema": {
@@ -362,6 +368,11 @@ query {
     }
   }
 }
+
+```
+</details>
+
+Результат:
 
 
 Скорее всего, сервер использует MongoDB.
