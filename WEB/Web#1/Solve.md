@@ -1,8 +1,10 @@
-Уязвимый сайт:
-http://platform_ctf_1.caplag.su:33212
-(screen1)
+### Уязвимый сайт:
 
-Попробуем пофазить:
+http://platform_ctf_1.caplag.su:33212
+
+![](./screens/screen1.PNG)
+
+### Попробуем пофазить:
 ffuf -w /usr/share/wordlists/dirb/big.txt \
 -u "http://platform_ctf_1.caplag.su:33212/FUZZ" \
 -t 50 \
