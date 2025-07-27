@@ -48,8 +48,7 @@ query {
 }
 ```
 
-<details>
-<summary>Показать код (первые 8 строк)</summary>
+Ответ:
 
 ```json
 {
@@ -69,6 +68,13 @@ query {
                 "name": "ID"
               }
             },
+```
+
+<details>
+<summary>Полный ответ ▼</summary>
+
+```json
+
             {
               "name": "count",
               "type": {
@@ -368,11 +374,8 @@ query {
     }
   }
 }
-
 ```
-</details>
 
-Результат:
 
 
 Скорее всего, сервер использует MongoDB.
