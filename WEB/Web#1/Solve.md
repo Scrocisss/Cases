@@ -5,21 +5,27 @@ http://platform_ctf_1.caplag.su:33212
 ![](./screens/screen1.PNG)
 
 ### Попробуем пофазить:
+
+```
 ffuf -w /usr/share/wordlists/dirb/big.txt \
 -u "http://platform_ctf_1.caplag.su:33212/FUZZ" \
 -t 50 \
 -mc all \
 -fc 400,404 \
 -recursion \
--recursion-depth 10 
+-recursion-depth 10
+```
 
 Единственное, что мы нашли - это страницу /flag , но доступа к ней у нас очевидно нет.
 
-Задание намекает нам на "Графы"
-Загуглим название задания в поиске подсказки:
-(screen2)
+### Задание намекает нам на "Графы"
 
-Далее еще один запрос в гугл и найдем эндпоинт:
+Загуглим название задания в поиске подсказки:
+
+![](./screens/screen2.PNG)
+
+### Далее еще один запрос в гугл и найдем эндпоинт:
+
 http://platform_ctf_1.caplag.su:33212/graphql
 
 Запросим схему:
