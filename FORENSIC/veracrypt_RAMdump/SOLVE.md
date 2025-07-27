@@ -2,7 +2,7 @@
 
 Вставляем на https://www.dcode.fr/cipher-identifier
 
-screen1
+![](./screens/screen1.PNG)
 
 Узнаем, что это base32
 
@@ -10,7 +10,7 @@ screen1
 
 https://cyberchef.org/
 
-screen2
+![](./screens/screen2.PNG)
 
 "Le mot de passe est le nom de l'école dans laquelle j'ai étudié. Sans espaces, chaque mot avec une lettre majuscule"
 
@@ -28,7 +28,7 @@ screen2
 
 И получаем пароль:
 
-screen3
+![](./screens/screen3.PNG)
 
 "EcoleMaternellePubliqueRaymondTeisseire"
 
