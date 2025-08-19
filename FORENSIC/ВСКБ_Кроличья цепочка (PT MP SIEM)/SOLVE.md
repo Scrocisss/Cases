@@ -22,7 +22,7 @@ event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "13916"
 
 ![](./screens/screen4.PNG)
 
-### Тут мы видим запуска следующего процесса notepad.exe
+### Тут мы видим запуск следующего процесса notepad.exe
 
 ![](./screens/screen5.PNG)
 
