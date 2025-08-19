@@ -26,3 +26,40 @@ event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "13916"
 
 ![](./screens/screen5.PNG)
 
+### Действуем по тому же алгоритму и смотрим какой процесс он породил
+
+```
+event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "6568"
+```
+
+![](./screens/screen6.PNG)
+
+### Процесс notepad.exe породил mspaint.exe, действуем по тому же алгоритму и разбираем цепочку дальше
+
+```
+event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "11324"
+```
+
+![](./screens/screen7.PNG)
+
+### Также выставляем фильтр и смотрим какой процесс породил cmd.exe
+
+```
+event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "14296"
+```
+
+![](./screens/screen8.PNG)
+
+### Встречаем powershell.exe, теперь выставляем фильтр и смотрим какие процессы (команды) он породил
+
+```
+event_src.host = "itwrksn08.innorange.ru" and object.process.parent.id = "5436"
+```
+
+![](./screens/screen9.PNG)
+
+### Далее необходимо разобрать команды, на 2ой команде находим флаг
+
+![](./screens/screen10.PNG)
+
+innoctf{its_my_carrot_1337}
